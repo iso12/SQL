@@ -5,6 +5,7 @@
   Description: 	Таблица для хранения настроек сжатия для объектов баз данных
 
 */
+create tavle [dbo].[Compression]
 
 create table [dbo].[compressionSettingsMaintenance]
 	(
