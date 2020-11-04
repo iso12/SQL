@@ -15,10 +15,22 @@ END
 GO
 ALTER PROCEDURE [dbo].[CommandExecute]
 (
-	@DatanaseContext NVARCHAR(MAX),
-	@Command         NVARCHAR(MAX),
-	@CommandType     NVARCHAR(MAX),
-	@Mode            INT     (MAX),
-	@Comment         NVARCHAR(MAX),
+	@DatanaseContext     NVARCHAR(MAX),
+	@Command             NVARCHAR(MAX),
+	@CommandType         NVARCHAR(MAX),
+	@Mode                INT     (MAX),
+	@Comment             NVARCHAR(MAX),
+	@DatabaseName        nvarchar(max) = NULL,
+    @SchemaName          nvarchar(max) = NULL,
+    @ObjectName          nvarchar(max) = NULL,
+    @ObjectType          nvarchar(max) = NULL,
+    @IndexName           nvarchar(max) = NULL,
+    @IndexType           int           = NULL,
+    @StatisticsName      nvarchar(max) = NULL,
+    @PartitionNumber     int           = NULL,
+    @ExtendedInfo        xml           = NULL,
+    @LockMessageSeverity int = 16,
+    @LogToTable          nvarchar(max),
+    @Execute             nvarchar(max)
 
 )
