@@ -24,7 +24,7 @@ create table [dbo].[compressionSettingsMaintenance]
 	CREATE UNIQUE CLUSTERED INDEX [CompressionSEttingsMainteanaceByDims]
 	ON [dbo].[CompressionSettingsMaintenance] 
 	(
-		[DatabaseName],
+	    [DatabaseName],
 	    [TableName],
 	    [INdexName],
 	    [Compression]
