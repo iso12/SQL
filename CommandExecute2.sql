@@ -1,36 +1,64 @@
-SET ANSI_NULLS ON
-GO
-SET QOUTED_IDENTIFIER ON
-GO
-IF NOT EXISTS 
-(
-	SELECT * FROM sys.object 
-	WHERE object_id = ONJECT_ID(N '[dbo].[CommandExecute]')
-	AND type IN  (N 'P', N'PC')
+set ansi_nulls = on,
+go
+set quoted_identifier on,
+go
 
+if not exists 
+(
+    select * from sys.objects
+    where object_id = object_id
+    (
+        N'[dbo].[CommandExecute]'
+
+    )
+
+    and type in
+    (
+        N'P',N'PC'
+    ) 
 )
-BEGIN 
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[CommandExecute]'
+BEGIN
+EXEC dbo.sp_executesql statement = N'CREATE PROCEDURE [dbo].[CommandExecute] AS'
 END
 GO
 ALTER PROCEDURE [dbo].[CommandExecute]
 (
-	@DatanaseContext     NVARCHAR(MAX),
-	@Command             NVARCHAR(MAX),
-	@CommandType         NVARCHAR(MAX),
-	@Mode                INT     (MAX),
-	@Comment             NVARCHAR(MAX),
-	@DatabaseName        nvarchar(max) = NULL,
-    @SchemaName          nvarchar(max) = NULL,
-    @ObjectName          nvarchar(max) = NULL,
-    @ObjectType          nvarchar(max) = NULL,
-    @IndexName           nvarchar(max) = NULL,
-    @IndexType           int           = NULL,
-    @StatisticsName      nvarchar(max) = NULL,
-    @PartitionNumber     int           = NULL,
-    @ExtendedInfo        xml           = NULL,
-    @LockMessageSeverity int = 16,
-    @LogToTable          nvarchar(max),
-    @Execute             nvarchar(max)
+    DatabaseContext  nvarchar(max),
+    Command          nvarchar(max),
+    CommandType      nvarchar(max),
+    Command2         smallint(max)
 
 )
+
+
+
+
+
+SELECT e1.employee_id, e1.first_name, e2.first_name, e2.salary 
+FROM 
+employees e1 JOIN employees e2 ON(e1.employee_id = e2.manager_id) 
+WHERE 
+e2.salary = 
+(
+    SELECT max(e3.salary) 
+    FROM employees e3 
+    WHERE e3.manager_id = e1.employee_id
+);
+
+
+
+
+
+SELECT e.first_name, j.job_title, e.salary
+FROM 
+employees e 
+JOIN jobs j       ON(e.job_id = j.job_id)
+JOIN employees e1 ON(e1.department_id = e.department_id) 
+WHERE 
+e.salary > (SELECT AVG(e2.salary) FROM employees e2) AND 
+e1.first_name LIKE '%T%' AND 
+e1.first_name NOT LIKE e.first_name;
+
+----------------------------------------------------------------------------------------------------------------
+
+select 
