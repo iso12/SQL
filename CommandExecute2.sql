@@ -67,5 +67,78 @@ BEGIN
                        Severity  int           not null,
                        [State]   int
                        )
+DECLARE @CurrentMessage         nvarchar(max)
+DECLARE @CurrentServerity       int
+DECLARE @CurrentState           int 
+DECLARE @sp_executesql          nvarchar(max) = QUOTENAME(@DatabaseContext) + '.sys.sp_executesql'
+DECLARE @ID                     int 
+DECLARE @Error                  int = 0
+DECLARE @ReturnCode             int = 0
+DECLARE @EmptyLine              nvarchar(max) = CHAR(9)
+-----------------------------------------------------------------------
+--// Chechk core requirements
+-----------------------------------------------------------------------
 
- 
+IF NOT 
+(
+    SELECT [compatibility_level]
+    FROM sys.databses 
+    WHERE database_id = DB_ID () >= 90
+)
+BEGIN
+  INSERT INTO @Errors ([Message], Severity, [State])
+  SELECT 'The databses' + QUOTENAME(DB_NAME(DB_ID()) + 'has to be in compatibility_level or higher. ', 16, 1
+END
+
+IF NOT 
+(
+    SELECT uses_ansi_nulls
+    FROM sys.sql_modules
+    WHERE [object_id] = @@PROCID
+) = 1
+BEGIN
+    INSERT INTO @Errors ([Message], Serverity, [State])
+    SELECT 'ANSI_NULLS has to  be set to ON for the stored procedure.', 16, 1
+END
+
+IF LogToTable = 'Y' AND NOT EXISTS  
+(
+    SELECT * FROM
+    sys.objects objects  
+    INNER JOIN sys.schemas schemas on  objects.[]  
+
+)   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
