@@ -23,42 +23,45 @@ END
 GO
 ALTER PROCEDURE [dbo].[CommandExecute]
 (
-    DatabaseContext  nvarchar(max),
-    Command          nvarchar(max),
-    CommandType      nvarchar(max),
-    Command2         smallint(max)
-
+    @DatabaseContext  nvarchar(max),
+    @Command          nvarchar(max),
+    @CommandType      nvarchar(max),
+    @Command2         smallint(max),
+    @Mode             int(max),
+    @Comment          nvarchar(max) = null,
+    @DatabaseName     nvarchar(max) = null,
+    @SchemaName       nvarchar(max) = null,
+    @ObjectName       nvarchar(max) = null,
+    @ObjectType       nvarchar(max) = null,
+    @IndexType        int     (max) = null,
+    @StatisticsName   nvarchar(max) = null,
+    @PartitionNumber  int     (max) = null,
+    @ExtendedInfo     xml           = null,
+    @LockMessageSeverity int = 16,
+    @LogToTable          nvarchar(max),
+    @Execute             nvarchar(max)     
 )
+AS
+
+BEGIN 
+ ------------------------------------------------------------------
+ --// Source: https://ola.hallengren.com
+ --// Linense: https://ola.hallengren.com/license.html
+ --// Github:  https://github.com/olahallengren/sql-server-mainteanace-solution
+ --// Version: 2020-01-26 14:06:53
+ --//
+ --//
+ -----------------------------------------------------------------
+ SET NOCOUNT ON 
+ DECLARE @StartMessage          nvarchar(max)
+ DECLARE @EndMessage            nvarchar(max)
+ DECLARE @ErrorMessage          nvarchar(max)
+ DECLARE @ErrorMessageOriginal  nvarchar(max)
+ DECLARE @Severity              int 
+ DECLARE @Error TABLE (ID int identity primary key,
+                       [Message] nvarchar(max) not null,
+                       Severity  int           not null,
+                       [State]   int
+                       )
 
 
-
-
-
-SELECT e1.employee_id, e1.first_name, e2.first_name, e2.salary 
-FROM 
-employees e1 JOIN employees e2 ON(e1.employee_id = e2.manager_id) 
-WHERE 
-e2.salary = 
-(
-    SELECT max(e3.salary) 
-    FROM employees e3 
-    WHERE e3.manager_id = e1.employee_id
-);
-
-
-
-
-
-SELECT e.first_name, j.job_title, e.salary
-FROM 
-employees e 
-JOIN jobs j       ON(e.job_id = j.job_id)
-JOIN employees e1 ON(e1.department_id = e.department_id) 
-WHERE 
-e.salary > (SELECT AVG(e2.salary) FROM employees e2) AND 
-e1.first_name LIKE '%T%' AND 
-e1.first_name NOT LIKE e.first_name;
-
-----------------------------------------------------------------------------------------------------------------
-
-select 
