@@ -3,3 +3,13 @@
 -- Create date: 2018-10-15
 -- Description:	Установка и начальная настройка инструмента
 -- =============================================================================================================
+
+USE [master]
+GO
+
+CREATE DATABASE [ExtendedSettingsFor1C]
+ CONTAIMENT = NONE
+ON [PRIMARY]
+(
+	
+)
