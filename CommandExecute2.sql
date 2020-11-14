@@ -105,10 +105,32 @@ IF LogToTable = 'Y' AND NOT EXISTS
 (
     SELECT * FROM
     sys.objects objects  
-    INNER JOIN sys.schemas schemas on  objects.[]  
-
+    INNER JOIN sys.schemas schemas on  objects.[schema_id] = schemas.[schema_id]
+    where   objects.[type] = 'U'
+    AND schemas.[name] = 'dbo' 
+    AND objects.[name] = 'CommadLog'
 )   
 
+BEGIN 
+  INSERT INTO Error([Message], Severity, [State])
+  SELECT 'the table CommandLog is missing.'16, 1
+END
+
+-----------------------------------------------------------
+--// Chechk input parameters
+-----------------------------------------------------------
+
+IF DatabaseContext IS NULL OR NOT EXISTS 
+(
+    SELECT * FROM sys.databses 
+    WHERE name = sys.DatabaseContext
+)
+BEGIN
+ INSERT INTO Erroes ([Message], Severity, [State])
+ SELECT 'The value for the parameters ' 16, 1
+END
+
+IF Command IS NULL OR 
 
 
 
