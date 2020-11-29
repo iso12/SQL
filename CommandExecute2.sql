@@ -130,7 +130,16 @@ BEGIN
  SELECT 'The value for the parameters ' 16, 1
 END
 
-IF Command IS NULL OR 
+IF Command IS NULL OR  @Command = ''
+BEGIN
+   INSERT INTO @Error ([Message], Severity, [State])
+   SELECT 'The value for the parameter @Command is not supported.', 16, 1
+END
+
+IF CommandType IS NULL OR @CommmandType = '' OR LEN(@CommandType) > 60
+BEGIN
+  INSERT INTO @Error ([Message], Serverity, [State])
+  SELECT 'The value for the parameter '
 
 
 
